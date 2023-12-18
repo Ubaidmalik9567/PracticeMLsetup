@@ -33,7 +33,7 @@ list_of_file = [
     f"SourceFolder/{project_name}/logger.py",
     f"SourceFolder/{project_name}/utils.py",
     "app.py",
-    "dockerFile",
+    "Dockerfile",
     "requirements.txt",
     "setup.py",
     
