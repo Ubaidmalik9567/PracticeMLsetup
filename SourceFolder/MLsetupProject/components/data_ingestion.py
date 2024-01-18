@@ -1,5 +1,7 @@
+# main aim of data ingestion is to read/collect data from database,train_test_split
 import os
-import sys 
+import sys
+import pandas as pd
 from SourceFolder.MLsetupProject.exception_handling import CustomException
 from SourceFolder.MLsetupProject.logger import logging
 from SourceFolder.MLsetupProject.utils import get_sql_data
@@ -38,12 +40,24 @@ class DataIngestionsetup:
         try:
             # make new dir
             os.makedirs(os.path.dirname(self.ingestionConfig.raw_data_path),exist_ok=True)
-            logging.info("Reading from phpMyAdmin") 
-            dataset = get_sql_data()
+            logging.info("Reading from phpMyAdmin")
+            '''
+            as for dataTransformation/Feature engineering we need dataset which already
+            get directly from SQL database.
+            now for this purpose we use this path
+            dataset = pd.read_csv(os.path.join("F:\\vs codes\\ML_Setup project\\data\\raw_data.csv")) 
+
+            not this " data = get_sql_data"
+            ''' 
+            # dataset = get_sql_data()
+            dataset = pd.read_csv(os.path.join("F:\\vs codes\\ML_Setup project\\data\\raw_data.csv")) 
+
             dataset.to_csv(self.ingestionConfig.raw_data_path, index=False, header=True)
             train_data,test_data = train_test_split(dataset,test_size=0.2,random_state=42) 
+            
             train_data.to_csv(self.ingestionConfig.train_data_path, index=False, header=True)
             test_data.to_csv(self.ingestionConfig.test_data_path, index=False, header=True)
+            
             logging.info("Data ingestion completed")
 
             return (
